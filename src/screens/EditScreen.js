@@ -4,12 +4,16 @@ import { Context as BlogContext } from '../context/BlogContext';
 
 import BlogPostForm from '../components/BlogPostForm';
 
-const CreateScreen = ({ navigation }) => {
-    const { addBlogPost } = useContext(BlogContext);
+const EditScreen = ({ navigation }) => {
+    const { state } = useContext(BlogContext);
 
-    return <BlogPostForm />;
+    const blogPost = state.find(
+        (blogPost) => blogPost.id === navigation.getParam('id')
+    );
+    
+    return <BlogPostForm />
 };
 
 const styles = StyleSheet.create({});
 
-export default CreateScreen;
+export default EditScreen;
