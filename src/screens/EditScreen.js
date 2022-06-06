@@ -5,10 +5,11 @@ import { Context as BlogContext } from '../context/BlogContext';
 import BlogPostForm from '../components/BlogPostForm';
 
 const EditScreen = ({ navigation }) => {
-    const { state } = useContext(BlogContext);
+    const { state, editBlogPost } = useContext(BlogContext);
+    const id = navigation.getParam('id');
 
     const blogPost = state.find(
-        (blogPost) => blogPost.id === navigation.getParam('id')
+        (blogPost) => blogPost.id === id
     );
     
     return (
@@ -18,7 +19,7 @@ const EditScreen = ({ navigation }) => {
                 content: blogPost.content
             }}
             onSubmit={(title, content) => {
-                console.log(title, content);
+                editBlogPost(id, title, content, () => navigation.pop());
             }}
         />
     );
