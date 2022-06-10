@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
@@ -6,8 +6,24 @@ import { Context as BlogContext } from '../context/BlogContext';
 
 const IndexScreen = ({ navigation }) => {
 
+    const { state, deleteBlogPost, getBlogPosts } = useContext(BlogContext);
 
-    const { state, deleteBlogPost } = useContext(BlogContext);
+    useEffect(() => {
+        getBlogPosts();
+
+        // anytime that we return to IndexScreen
+        // run this request again
+        // this could lead to a memeory leak
+        const listener = navigation.addListener('didFocus', () => {
+            getBlogPosts();
+        });
+
+        // cleanup after our component
+        // stop any memory leak
+        return () => {
+            listener.remove();
+        };
+    }, []);
 
     return (
         <View>
